@@ -1,6 +1,6 @@
 # GUIDING TO USE 3D HUMAN POSE ESTIMATION
 
-
+GitHub Url: https://github.com/phan-kimngan/pose3d_exam
 
 Subject: **ABNORMAL DETECTION**
 
@@ -72,7 +72,7 @@ python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 
 
 
-## Structure of Project
+## Structure of Project VideoPose3D
 
 ```
 VideoPose3D
