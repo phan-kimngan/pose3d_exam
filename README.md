@@ -141,7 +141,7 @@ nb_frames=512
 nb_frames=792
 ```
 
-Try using video with *850fps** and named **test_50fps.mp4**. Remove audio from video with named **testwithoutaudio.pm4** before change frame rate.
+Try using video with **50fps** and named **test_50fps.mp4**. Remove audio from **test.mp4** with named **testwithoutaudio.pm4** before change frame rate.
 
 ```bash
   ffmpeg -i inputs/test.mp4 -map 0 -map -0:a inputs/testwithoutaudio.mp4
@@ -165,8 +165,6 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'inputs/test_50fps.mp4':
 nb_frames=851
 
 ```
-
-
 
 + Infer keypoints from all videos in inputs by command
 
@@ -214,7 +212,8 @@ python run.py 										\
 
 + Final Result
 
-  First Submittion using **test.mp4** with **30Hz** and **output.mp4** with **30Hz**.
+*First Submittion using **test.mp4** with **30Hz** and **output.mp4** with **30Hz**.*
+
 ```bash
 ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
 #Output
@@ -235,7 +234,7 @@ nb_frames=512
 
 <img src="images/output.gif" alt="output" style="zoom:200%;" />
 
-2nd Submittion using **test_50fps.mp4** with **50Hz** and **output_50fps.mp4** with **50Hz**.
+*2nd Submittion using **test_50fps.mp4** with **50Hz** and **output_50fps.mp4** with **50Hz**.*
 
 ```bash
 ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
