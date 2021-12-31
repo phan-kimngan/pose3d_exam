@@ -254,7 +254,7 @@ nb_frames=851
 
 <img src="outputs/output_50fps.png" alt="output" style="zoom:200%;" />
 
-<img src="images/output_50fps.gif" alt="output" style="zoom:200%;" />
+<img src="images/output_50fps.gif" alt="output" style="zoom:300%;" />
 
 
 
