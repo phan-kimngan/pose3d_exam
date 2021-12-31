@@ -94,7 +94,7 @@ VideoPose3D
 ├── run.py
 ├── inputs
 │   ├── test.mp4      <-- input with 30 fps (first submit)
-│   ├── testwithoutaudio.mp4 <- from test to using ffmpeg
+│   ├── testwithoutaudio.mp4 
 │   ├── test_50fps.mp4      <-- input with 50 fps
 │   └── ...
 ├── outputs
@@ -116,7 +116,7 @@ VideoPose3D
 
 + Video Preprocessing
 
-Check frame in video (first submit) and results of ffprobe gives 29.99fps ~ 30fps for test.mp4
+Check frame in video (**first submit**) and results of *ffprobe* gives 29.99fps ~ **30fps** for **test.mp4**
 
 ```bash
 ffprobe -i inputs/test.mp4 -show_streams -hide_banner | grep "nb_frames"
@@ -141,12 +141,31 @@ nb_frames=512
 nb_frames=792
 ```
 
-Try using video with 50fps and give name is test_50fps.mp4. Remove audio from video with output name is **testwithoutaudio.pm4** before change frame rate.
+Try using video with *850fps** and named **test_50fps.mp4**. Remove audio from video with named **testwithoutaudio.pm4** before change frame rate.
 
 ```bash
   ffmpeg -i inputs/test.mp4 -map 0 -map -0:a inputs/testwithoutaudio.mp4
   fmpeg -i inputs/testwithoutaudio.mp4 -filter "minterpolate='fps=50'" -crf 0 inputs/test_50fps.mp4
 ```
+
+Check **test_50fps.mp4** and use it for **input**
+```bash
+ffprobe -i inputs/test_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
+#Output
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'inputs/test_50fps.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+  Duration: 00:00:17.02, start: 0.000000, bitrate: 74134 kb/s
+    Stream #0:0(und): Video: h264 (High 4:4:4 Predictive) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080 [SAR 1:1 DAR 16:9], 74132 kb/s, 50 fps, 50 tbr, 12800 tbn, 100 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+nb_frames=851
+
+```
+
 
 
 + Infer keypoints from all videos in inputs by command
@@ -188,16 +207,57 @@ python run.py 										\
 	--viz-subject test.mp4 							\  # filename in inputs directory
 	--viz-action custom 							\  # custom dataset
 	--viz-camera 0 									\
-	--viz-video inputs/test.mp4 					\  # input video
-	--viz-output outputs/output.mp4 				\  # output rendering video with 2D + 3D keypoints
+	--viz-video inputs/test_50fps.mp4 				\  # input video
+	--viz-output outputs/output_50fps.mp4 			\  # output rendering video with 2D + 3D keypoints
 	--viz-size 6
 ```
 
 + Final Result
 
-![output](outputs/output.png)
+  First Submittion using **test.mp4** with **30Hz** and **output.mp4** with **30Hz**.
+```bash
+ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
+#Output
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'outputs/output.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+  Duration: 00:00:17.07, start: 0.000000, bitrate: 2910 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1200x600, 2907 kb/s, 30 fps, 30 tbr, 15360 tbn, 60 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+nb_frames=512
+```
 
-![output](images/output.gif)
+<img src="outputs/output.png" alt="output" style="zoom:55%;" />
+
+<img src="images/output.gif" alt="output" style="zoom:200%;" />
+
+2nd Submittion using **test_50fps.mp4** with **50Hz** and **output_50fps.mp4** with **50Hz**.
+
+```bash
+ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
+#Output
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'outputs/output_50fps.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.29.100
+  Duration: 00:00:17.02, start: 0.000000, bitrate: 2884 kb/s
+    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p, 1200x600, 2879 kb/s, 50 fps, 50 tbr, 12800 tbn, 100 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+nb_frames=851
+```
+
+<img src="outputs/output_50fps.png" alt="output" style="zoom:200%;" />
+
+<img src="images/output_50fps.gif" alt="output" style="zoom:200%;" />
+
+
 
 ## References
 
