@@ -93,10 +93,13 @@ VideoPose3D
 │   └── ...
 ├── run.py
 ├── inputs
-│   ├── test.mp4      <-- input
+│   ├── test.mp4      <-- input with 30 fps (first submit)
+│   ├── testwithoutaudio.mp4 <- from test to using ffmpeg
+│   ├── test_50fps.mp4      <-- input with 50 fps
 │   └── ...
 ├── outputs
-│   ├── test.mp4.npz  <-- keypoints infered from detron2
+│   ├── test.mp4.npz  <-- keypoints infered from detron2 of test.mp4(first submit)
+│   ├── test_50fps.mp4.npz  <-- keypoints infered from detron2 test.mp4
 │   └── ...
 └── ...
 ```
@@ -108,7 +111,44 @@ VideoPose3D
 + Make **inputs** and **outputs** directories at **VideoPose3D**
 
 + Put demo video into inputs such as **test.mp4**
+
 + Activate **pose3d** environment
+
++ Video Preprocessing
+
+Check frame in video (first submit) and results of ffprobe gives 29.99fps ~ 30fps for test.mp4
+
+```bash
+ffprobe -i inputs/test.mp4 -show_streams -hide_banner | grep "nb_frames"
+#Output
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'inputs/test.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp41isom
+    creation_time   : 2021-12-30T13:20:39.000000Z
+  Duration: 00:00:17.10, start: 0.000000, bitrate: 18061 kb/s
+    Stream #0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080 [SAR 1:1 DAR 16:9], 17891 kb/s, 29.99 fps, 30 tbr, 30k tbn, 60 tbc (default)
+    Metadata:
+      creation_time   : 2021-12-30T13:20:39.000000Z
+      handler_name    : VideoHandler
+      encoder         : AVC Coding
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 195 kb/s (default)
+    Metadata:
+      creation_time   : 2021-12-30T13:20:39.000000Z
+      handler_name    : SoundHandler
+nb_frames=512
+nb_frames=792
+```
+
+Try using video with 50fps and give name is test_50fps.mp4. Remove audio from video with output name is **testwithoutaudio.pm4** before change frame rate.
+
+```bash
+  ffmpeg -i inputs/test.mp4 -map 0 -map -0:a inputs/testwithoutaudio.mp4
+  fmpeg -i inputs/testwithoutaudio.mp4 -filter "minterpolate='fps=50'" -crf 0 inputs/test_50fps.mp4
+```
+
+
 + Infer keypoints from all videos in inputs by command
 
 ```bash
