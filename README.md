@@ -94,12 +94,12 @@ VideoPose3D
 ├── run.py
 ├── inputs
 │   ├── test.mp4      <-- input with 30 fps (first submit)
-│   ├── testwithoutaudio.mp4 
-│   ├── test_50fps.mp4      <-- input with 50 fps
+│   ├── testwithoutaudio.mp4 <-- using ffmpeg to remove audio from test.mp4
+│   ├── test_50fps.mp4  <-- using ffmpeg to change frame rate from testwithoutaudio.mp4
 │   └── ...
 ├── outputs
 │   ├── test.mp4.npz  <-- keypoints infered from detron2 of test.mp4(first submit)
-│   ├── test_50fps.mp4.npz  <-- keypoints infered from detron2 test.mp4
+│   ├── test_50fps.mp4.npz  <-- keypoints infered from detron2 of test_50fps.mp4
 │   └── ...
 └── ...
 ```
@@ -116,7 +116,7 @@ VideoPose3D
 
 + Video Preprocessing
 
-Check frame in video (**first submit**) and results of *ffprobe* gives 29.99fps ~ **30fps** for **test.mp4**
+Check frame in **test.mp4** (**first submit**) and results of *ffprobe* gives 29.99fps ~ **30fps** for **test.mp4**
 
 ```bash
 ffprobe -i inputs/test.mp4 -show_streams -hide_banner | grep "nb_frames"
@@ -141,14 +141,14 @@ nb_frames=512
 nb_frames=792
 ```
 
-Try using video with **50fps** and named **test_50fps.mp4**. Remove audio from **test.mp4** with named **testwithoutaudio.pm4** before change frame rate.
+Try using video with **50fps** and named **test_50fps.mp4**. Remove audio from **test.mp4** with named **testwithoutaudio.mp4** before change frame rate.
 
 ```bash
   ffmpeg -i inputs/test.mp4 -map 0 -map -0:a inputs/testwithoutaudio.mp4
   fmpeg -i inputs/testwithoutaudio.mp4 -filter "minterpolate='fps=50'" -crf 0 inputs/test_50fps.mp4
 ```
 
-Check **test_50fps.mp4** and use it for **input**
+Check **test_50fps.mp4** 
 ```bash
 ffprobe -i inputs/test_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
 #Output
@@ -212,7 +212,7 @@ python run.py 										\
 
 + Final Result
 
-*First Submittion using **test.mp4** with **30Hz** and **output.mp4** with **30Hz**.*
+*First Submittion without using ffmpeg for **test.mp4** with **30Hz** and **output.mp4** with **30Hz**.*
 
 ```bash
 ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
@@ -220,6 +220,7 @@ ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames
 Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'outputs/output.mp4':
   Metadata:
     major_brand     : isom
+    
     minor_version   : 512
     compatible_brands: isomiso2avc1mp41
     encoder         : Lavf58.29.100
@@ -234,7 +235,9 @@ nb_frames=512
 
 <img src="images/output.gif" alt="output" style="zoom:200%;" />
 
-*2nd Submittion using **test_50fps.mp4** with **50Hz** and **output_50fps.mp4** with **50Hz**.*
+
+
+*2nd Submittion using ffmpeg for **test.mp4** with **30Hz** and **output_50fps.mp4** with **50Hz**.*
 
 ```bash
 ffprobe -i outputs/output_50fps.mp4 -show_streams -hide_banner | grep "nb_frames"
@@ -254,7 +257,7 @@ nb_frames=851
 
 <img src="outputs/output_50fps.png" alt="output" style="zoom:200%;" />
 
-<img src="images/output_50fps.gif" alt="output" style="zoom:300%;" />
+<img src="images/output_50fps.gif" alt="output" style="zoom:200%;" />
 
 
 
