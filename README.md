@@ -2,10 +2,6 @@
 
 GitHub Url: https://github.com/phan-kimngan/pose3d_exam
 
-Subject: **ABNORMAL DETECTION**
-
-Professor: **Jeong, Hieyong**
-
 Student Name: **Phan Kim Ngan**
 
 ID: **217161**
